@@ -31,16 +31,8 @@ export fastq2File=$OUTPUT_R2
 export starOutputPrefix="<STAR_OUTPUT_PREFIX>"
 
 echo "Aligning reads with STAR..."
-STAR --runMode alignReads \
-     --genomeDir ${genomeIndexDir} \
-     --runThreadN 8 \
-     --readFilesIn ${fastq1File} ${fastq2File} \
-     --outFileNamePrefix ${starOutputPrefix} \
-     --outSAMtype BAM Unsorted \
-     --outSAMmapqUnique 60 \
-     --outSAMunmapped Within KeepPairs \
-     --readFilesCommand zcat 
-
+STAR --runMode alignReads --genomeDir ${genomeIndexDir} --runThreadN 8 --readFilesIn ${fastq1File} ${fastq2File} --outFileNamePrefix ${starOutputPrefix} --outSAMtype BAM Unsorted --outSAMmapqUnique 60 --outSAMunmapped Within KeepPairs \
+    
 # Step 4: Quality control after alignment with MultiQC
 echo "Running MultiQC on aligned reads..."
 multiqc ./ -o ./multiqc_report_post_alignment
