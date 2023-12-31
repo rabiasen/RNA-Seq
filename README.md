@@ -54,8 +54,8 @@ samtools index ${starOutputPrefix}Sorted.out.bam
 featureCounts -t exon \
       -g gene_id \
       --primary \
-      -a ${gtfFile} \
+      -a ${genomegtfFile} \
       -o ${featureCountsOutput} \
-      ${outBam}
+      ${starOutputPrefix}Sorted.out.bam
 ```
 
