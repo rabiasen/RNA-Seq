@@ -1,7 +1,7 @@
 # RNA-seq Analysis Workflow: From FASTQ to Quantification
 Rabia Şen
 
-## Introduction
+# Introduction
 This guide includes my methodology for analyzing RNA-seq data. The materials and sources consulted to create this tutorial are listed in the resources section at the end.
 Here is the diagram I prepared;
 >![image](https://github.com/rabiasen/RNA-Seq/assets/58332251/099058c2-3f54-4b5c-bd8f-ee5ab6946869)
@@ -42,13 +42,13 @@ STAR --genomeDir ${genomeIndexDir} \
 ```
 multiqc ./ -o ./multiqc_report_post_alignment
 ```
-# Step 5: Sort and index BAM files with Samtools
+# Step 5: Sort and index BAM files with [Samtools](https://github.com/samtools/samtools)
 ```
 samtools sort -@ 8 ${starOutputPrefix}Aligned.out.bam > ${starOutputPrefix}Sorted.out.bam
 samtools index ${starOutputPrefix}Sorted.out.bam
 ```
 
-# Step 6: Quantify reads with featureCounts
+# Step 6: Quantify reads with [featureCounts](https://rnnh.github.io/bioinfo-notebook/docs/featureCounts.html)
 
 ```
 featureCounts -t exon \
