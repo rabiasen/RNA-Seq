@@ -18,7 +18,6 @@ export INPUT_R2="<INPUT_FASTQ_R2>"
 export OUTPUT_R1="<OUTPUT_TRIMMED_R1>"
 export OUTPUT_R2="<OUTPUT_TRIMMED_R2>"
 ```
-
 Run this for trimming adapters from paired-end data 
 ```
 cutadapt -a $FADAPTER -A $RADAPTER -o $OUTPUT_R1 -p $OUTPUT_R2 $INPUT_R1 $INPUT_R2 -j 8 -m 32
@@ -28,18 +27,11 @@ cutadapt -a $FADAPTER -A $RADAPTER -o $OUTPUT_R1 -p $OUTPUT_R2 $INPUT_R1 $INPUT_
 multiqc ./ -o ./multiqc_report_pre_alignment
 ```
 # Step 3: Align reads using [STAR](https://github.com/alexdobin/STAR)
-Define placeholders for STAR alignment
+
 ```
-export genomeIndexDir="<PATH_TO_GENOME_INDEX>"
-export fastq1File=$OUTPUT_R1
-export fastq2File=$OUTPUT_R2
-export starOutputPrefix="<STAR_OUTPUT_PREFIX>"
-```
-```
-STAR --runMode alignReads \
-     --genomeDir ${genomeIndexDir} \
+STAR --genomeDir ${genomeIndexDir} \
      --runThreadN 8 \
-     --readFilesIn ${fastq1File} ${fastq2File} \
+     --readFilesIn $OUTPUT_R1 $OUTPUT_R2 \
      --outFileNamePrefix ${starOutputPrefix} \
      --outSAMtype BAM Unsorted \
      --outSAMmapqUnique 60 \
@@ -51,18 +43,12 @@ STAR --runMode alignReads \
 multiqc ./ -o ./multiqc_report_post_alignment
 ```
 # Step 5: Sort and index BAM files with Samtools
-Define placeholders for Samtools sorting and indexing
 ```
-export inBam="${starOutputPrefix}Aligned.out.bam"
-export outBam="${starOutputPrefix}Sorted.out.bam"
-samtools sort -@ 8 ${inBam} > ${outBam}
-samtools index ${outBam}
+samtools sort -@ 8 ${starOutputPrefix}Aligned.out.bam > ${starOutputPrefix}Sorted.out.bam
+samtools index ${starOutputPrefix}Sorted.out.bam
 ```
 
 # Step 6: Quantify reads with featureCounts
-Define placeholder for featureCounts
-export gtfFile="<PATH_TO_GTF_FILE>"
-export featureCountsOutput="<FEATURECOUNTS_OUTPUT_FILE>"
 
 ```
 featureCounts -t exon \
