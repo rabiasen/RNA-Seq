@@ -263,7 +263,7 @@ ggplot(tcounts, aes(x = condition, y = gene_id, fill = condition)) +
        title = paste("Expression of gene", gene_id))
 ```
 
-**GeneSetEnrichmentAnalysis (KEGG) and Visualisation**
+**Gene Set Enrichment Analysis (KEGG) and Visualisation**
 
 The same method can also be applied using gseGO for getting results based on the Gene Ontology database.
 
